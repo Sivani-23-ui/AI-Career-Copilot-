@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
-import { LoadingSpinner, StatCard, DemoBadge } from '@/components/ui';
+import { LoadingSpinner, StatCard } from '@/components/ui';
 import ProgressBar from '@/components/ui/ProgressBar';
 import type { User, Roadmap } from '@/types';
 import {

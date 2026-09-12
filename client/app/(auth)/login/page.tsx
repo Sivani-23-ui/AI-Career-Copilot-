@@ -7,13 +7,9 @@ import api from '@/lib/api';
 import { setToken } from '@/lib/auth';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
-const DEMO_EMAIL = 'demo@careercopilot.com';
-const DEMO_PASSWORD = 'Demo@12345';
-
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [demoLoading, setDemoLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
 
@@ -21,43 +17,21 @@ export default function LoginPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const doLogin = async (email: string, password: string) => {
-    const res = await api.post('/auth/login', { email, password });
-    setToken(res.data.token);
-    localStorage.setItem('user', JSON.stringify(res.data.user));
-    toast.success(`Welcome back, ${res.data.user.name.split(' ')[0]}! 👋`);
-    router.push('/overview');
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await doLogin(form.email, form.password);
+      const res = await api.post('/auth/login', { email: form.email, password: form.password });
+      setToken(res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      toast.success(`Welcome back, ${res.data.user.name.split(' ')[0]}! 👋`);
+      router.push('/overview');
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Login failed. Check your credentials.');
     } finally {
       setLoading(false);
     }
   };
-
-  const handleDemo = async () => {
-    setDemoLoading(true);
-    setForm({ email: DEMO_EMAIL, password: DEMO_PASSWORD });
-    try {
-      await doLogin(DEMO_EMAIL, DEMO_PASSWORD);
-    } catch (err: any) {
-      // If demo account doesn't exist yet, surface a clear message
-      toast.error(
-        err.response?.data?.message ||
-        'Demo login failed. Please run: cd server && node scripts/seedDemoUser.js'
-      );
-    } finally {
-      setDemoLoading(false);
-    }
-  };
-
-  const anyLoading = loading || demoLoading;
 
   return (
     <div className="w-full max-w-md">
@@ -103,7 +77,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <button type="submit" disabled={anyLoading} className="btn-primary w-full flex items-center justify-center gap-2">
+          <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2">
             {loading ? (
               <><Loader2 className="w-4 h-4 animate-spin" /> Signing in...</>
             ) : (
@@ -111,24 +85,6 @@ export default function LoginPage() {
             )}
           </button>
         </form>
-
-        <div className="relative my-4">
-          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
-          <div className="relative text-center"><span className="bg-white px-3 text-xs text-slate-400">or</span></div>
-        </div>
-
-        {/* Demo account button */}
-        <button
-          onClick={handleDemo}
-          disabled={anyLoading}
-          className="btn-secondary w-full text-sm flex items-center justify-center gap-2"
-        >
-          {demoLoading ? (
-            <><Loader2 className="w-4 h-4 animate-spin" /> Logging in as Demo...</>
-          ) : (
-            '🧪 Try with Demo Account'
-          )}
-        </button>
 
         <p className="text-center text-sm text-slate-500 mt-5">
           Don&apos;t have an account?{' '}

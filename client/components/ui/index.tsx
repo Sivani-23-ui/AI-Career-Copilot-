@@ -27,14 +27,6 @@ export function EmptyState({ icon: Icon, title, description, action }: {
   );
 }
 
-export function DemoBadge() {
-  return (
-    <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-medium px-2 py-0.5 rounded-full">
-      🧪 Demo Mode
-    </span>
-  );
-}
-
 export function StatCard({ label, value, color = 'text-blue-600', sub }: {
   label: string; value: string | number; color?: string; sub?: string;
 }) {
