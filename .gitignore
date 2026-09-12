@@ -1,0 +1,13 @@
+# AI Career Copilot – Files to exclude from Git
+# Rename this to .gitignore before committing
+
+node_modules/
+.env
+.env.local
+.next/
+dist/
+build/
+*.log
+.DS_Store
+Thumbs.db
+uploads/
