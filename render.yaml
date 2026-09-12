@@ -1,0 +1,22 @@
+# Render deployment configuration for the Express backend
+# Deploy at: https://render.com → New Web Service → connect GitHub repo
+# Set Root Directory to: server
+
+services:
+  - type: web
+    name: ai-career-copilot-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      # Set these in the Render dashboard — do NOT commit real values:
+      # MONGODB_URI  → your MongoDB Atlas connection string
+      # JWT_SECRET   → a long random string
+      # DEMO_MODE    → true (or false if you have an OpenAI key)
+      # OPENAI_API_KEY → your key (optional)
+      # CLIENT_URL   → https://your-vercel-app.vercel.app
