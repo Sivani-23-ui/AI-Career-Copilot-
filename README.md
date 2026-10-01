@@ -24,9 +24,8 @@ AI Career Copilot helps students:
 | AI | OpenAI API (compatible with IBM watsonx proxy) |
 | Auth | JWT + bcryptjs |
 
----
 
-## Project Structure
+## Project Structure **
 
 ```
 ai-career-copilot/
